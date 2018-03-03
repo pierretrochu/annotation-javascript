@@ -217,6 +217,7 @@ function highlight_selection() {
         }
     }
     saveText();
+    console.log("this is a github test for production")
     textHighlights();
 };
 
