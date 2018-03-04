@@ -3,7 +3,7 @@
 let comments = new Array();
 
 //initialize the counter displayed on top
-var thereisacomment = false;
+let thereisacomment = false;
 function numberofcommentsAtLaunch() {
   let counterAtLaunch = comments.length;
   document.getElementById("test").innerHTML = counterAtLaunch;
@@ -15,7 +15,6 @@ function init() {
   getComment();
   getText();
   numberofcommentsAtLaunch();
-  //eventHighlighted();
 }
 
 //this item serves to pass the margin between functions. It should disappear soon.
@@ -38,44 +37,59 @@ text.addEventListener("copy", highlight_selection);
 text.addEventListener("copy", createNewCommentOnEvent);
 text.addEventListener("copy", numberofcomments);
 text.addEventListener("paste", clearStorage);
-document.addEventListener("click", clickOutside)
+document.addEventListener("click", clickOutside);
+marginright.addEventListener("click", cancelComment);
+//function to make sure annotated text gets highlighted when clicked.
 
+function highlightTextOnClick() {
+  let highlightsList = document.querySelectorAll('.highlight');
+  let notesList = document.getElementsByClassName("alert")
+      for (var i = 0; i < highlightsList.length; i++) {
+        let clickedId = highlightsList[i].id;
+        highlightsList[i].onclick = changePosition;
+      }
+    }
 
-function textHighlights() {
-  let thereisacomment= true;
-  var highlights = document.querySelectorAll('.highlight');
-      for (var i = 0; i < highlights.length; i++) {
-        highlights[i].onclick = function changePosition () {
-          if (thereisacomment) {
-            clickOutside();
-          }
-        let spanID = this.id
-        let selectedNote = document.getElementsByClassName("alert")
-        for (var i = 0; i < selectedNote.length; i++)
-        if (selectedNote[i].id == spanID) {
-          console.log("this is the right one")
-          selectedNote[i].style.marginLeft = "2px ";
-          }
-        this.className = "highlight-clicked";
+function changePosition() {
+  let targetID = event.target.id;
+  this.className = "highlight-clicked";
+  let notesList = document.getElementsByClassName("alert");
+    for (var i = 0; i < notesList.length; i++) {
+      if (notesList[i].id == targetID) {
+        notesList[i].style.marginLeft = "2px";
       }
     }
   }
 
-//Click outside of the element functions
 function clickOutside() {
-  commentSelected = false;
+  thereisacomment = false;
   let highlightedComment = document.getElementsByClassName('highlight-clicked')[0];
   if (highlightedComment != undefined && event.target.className != 'highlight-clicked' && event.target.className != 'alert') {
-    highlightedComment.className = 'highlight'
-    let spanID = highlightedComment.id
-    let selectedNote = document.getElementsByClassName("alert")
-    for (var i = 0; i < selectedNote.length; i++)
-    if (selectedNote[i].id == spanID) {
-      selectedNote[i].style.marginLeft = "10px ";
+    let spanID = highlightedComment.id;
+    let selectedNote = document.getElementsByClassName("alert");
+      for (var i = 0; i < selectedNote.length; i++)
+        if (selectedNote[i].id == spanID) {
+          selectedNote[i].style.marginLeft = "10px ";
+        }
+      highlightedComment.className = "highlight";
+      }
     }
-  }
-}
 
+function cancelComment(event) {
+  const target = event.target;
+  if (target.className != 'cancel') return;
+
+  const grandParentTarget = target.parentNode.parentNode;
+  grandParentTarget.parentNode.removeChild(grandParentTarget);
+  var highlights = document.querySelectorAll('.highlight');
+      for (var i = 0; i < highlights.length; i++) {
+        if (highlights[i].id = grandParentTarget.id) {
+          let toBeDeletedHighlight = highlights[i];
+          let highlightParentNode = highlights[i].parentNode
+          highlightParentNode.replaceChild(document.createTextNode(toBeDeletedHighlight.innerHTML), toBeDeletedHighlight);
+        }
+      }
+    };
 
 
 //function to get highlighted text
@@ -126,31 +140,31 @@ function createNewComment(commentFromStorage) {
   commentHeader.style.margin = commentFromStorage.margin;
   commentHeader.id = commentFromStorage.id;
   return commentHeader ;
-}
+  }
 
 //save new or edited comments objects to storage
 function saveComment(Comment) {
     if (localStorage) {
-        let key = "comment " + Comment.id;
-        let item = JSON.stringify(Comment);
-        localStorage.setItem(key, item);
-    }
+      let key = "comment " + Comment.id;
+      let item = JSON.stringify(Comment);
+      localStorage.setItem(key, item);
+      }
     else {
-        console.log("Error: you don't have localStorage!");
+      console.log("Error: you don't have localStorage!");
     }
-}
+  }
 
 function saveText() {
     if (localStorage) {
-        let key = "text" ;
-        let annotatedtext = document.getElementById("text");
-        let annotatextTextOuterHTML = annotatedtext.outerHTML;
-        localStorage.setItem(key, annotatextTextOuterHTML);
+      let key = "text" ;
+      let annotatedtext = document.getElementById("text");
+      let annotatextTextOuterHTML = annotatedtext.outerHTML;
+      localStorage.setItem(key, annotatextTextOuterHTML);
     }
     else {
-        console.log("Error: you don't have localStorage!");
+      console.log("Error: you don't have localStorage!");
     }
-}
+  }
 
 //Class created to store the Comments
 function Comment(id, margin, absoluteOffsetBottom, content) {
@@ -158,7 +172,7 @@ function Comment(id, margin, absoluteOffsetBottom, content) {
     this.margin = margin;
     this.absoluteOffsetBottom = absoluteOffsetBottom;
     this.content = content;
-}
+  }
 
 /////////////////////////////////////////////
 //****************************************//
@@ -168,13 +182,11 @@ function Comment(id, margin, absoluteOffsetBottom, content) {
 function highlight_selection() {
     //initiate variable for the selection
     let selection;
-
     //Get the selected text
     if (window.getSelection)
-        selection = window.getSelection();
+      selection = window.getSelection();
     else if (typeof document.selection != "undefined")
         selection = document.selection;
-
     //Get the selected content, in a range object
     let range = selection.getRangeAt(0);
     //If the range spans some text, and inside a tag, set its css class.
@@ -216,8 +228,8 @@ function highlight_selection() {
         }
     }
     saveText();
-    textHighlights();
-};
+    highlightTextOnClick();
+  };
 
 
 /////////////////////////////////////////////
@@ -438,23 +450,3 @@ function numberofcomments () {
 function clearStorage(){
     localStorage.clear();
 }
-
-
-marginright.onclick = function cancelComment(event) {
-  let target = event.target; // where was the click?
-  if (target.className != 'cancel') return; //checking if this is on cancel
-  let grandParentTarget = target.parentNode.parentNode;
-  grandParentTarget.parentNode.removeChild(grandParentTarget);
-
-  var highlights = document.querySelectorAll('.highlight');
-      for (var i = 0; i < highlights.length; i++) {
-        if (highlights[i].id = grandParentTarget.id) {
-          const toBeDeletedHighlight = highlights[i];
-          let highlightParentNode = highlights[i].parentNode
-          console.log(highlightParentNode);
-          console.log(toBeDeletedHighlight);
-          highlightParentNode.replaceChild(document.createTextNode(toBeDeletedHighlight.innerHTML), toBeDeletedHighlight);
-        //  highlightParentNode.removeChild(highlightParentNode);
-        }
-      }
-};

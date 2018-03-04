@@ -240,6 +240,7 @@ cursor: pointer;
 
 .highlight-clicked {
   background: yellow;
+  cursor: pointer;
 }
 
 .boxclose:hover {
