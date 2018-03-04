@@ -46,7 +46,7 @@ function textHighlights() {
   var highlights = document.querySelectorAll('.highlight');
       for (var i = 0; i < highlights.length; i++) {
         highlights[i].onclick = function changePosition () {
-          if (thereisacomment){
+          if (thereisacomment) {
             clickOutside();
           }
         let spanID = this.id
@@ -71,7 +71,6 @@ function clickOutside() {
     let selectedNote = document.getElementsByClassName("alert")
     for (var i = 0; i < selectedNote.length; i++)
     if (selectedNote[i].id == spanID) {
-      console.log("this is the right one")
       selectedNote[i].style.marginLeft = "10px ";
     }
   }
@@ -217,14 +216,9 @@ function highlight_selection() {
         }
     }
     saveText();
-    console.log("this is a github test for production")
     textHighlights();
 };
 
-//function that looks for the element position in an HTML collection
-function findSpanRange(span) {
-  return span;
-}
 
 /////////////////////////////////////////////
 //****************************************//
