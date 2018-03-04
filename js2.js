@@ -292,8 +292,6 @@ function createNewCommentOnEvent() {
     console.log("detected a previous sibling")
     var commentHeaderPreviousSiblingOffsetBottom = commentHeader.previousSibling.offsetTop + 80;
     }
-
-
   ///////////////////////
   // MARGIN DEFINITION
   ///////////////////////
