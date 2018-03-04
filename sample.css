@@ -89,13 +89,13 @@ grid-template-columns: 1fr 2.5fr 1fr;
       }
 
 #circle {
-          background: #8482FF;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          position: fixed;
-          margin-left: 2%;
-          margin-top: 1%;
+background: #8482FF;
+width: 20px;
+height: 20px;
+border-radius: 50%;
+position: fixed;
+margin-left: 2%;
+margin-top: 1%;
       }
 
 #button {
@@ -130,21 +130,76 @@ cursor: pointer;
   transition-duration : 0.5s;
   transition-timing-function: ease-out;
   box-shadow: rgba(0,0,0,.1) 0 3px 15px;
+  cursor: pointer;
 }
 
 .notebox {
-  width: 200px;
+  width: 184px;
+  cursor: default;
   min-height: 60px;
   position: static;
   background-color: teal;
   box-shadow: rgba(0,0,0,.05) 0 3px 15px;
   text-align: left;
-  margin-top: 3px;
+  padding: 8px;
+  display: block;
 }
 
-.notebox p{
-margin-left: 10px;
-display: block;
+.notebox p {
+  outline-width: 0;
+  cursor: text;
+  caret-color: #204A4A;
+  background-color: #45A2A2;
+  color: #204A4A;
+  border: 1px solid #c8c8c8;
+  padding: 4px;
+  font-family: Arial,sans-serif;
+  font-size: 14px;
+}
+
+.save {
+  font-family: Arial,sans-serif;
+  cursor: default;
+  background-image: -webkit-linear-gradient(top,#005E5E,#004444);
+  display: inline-block;
+  border: 1px solid #003434;
+  border-radius: 2px;
+  margin: 8px 7px 0 0;
+  font-size: 11px;
+  height: 27px;
+  line-height: 27px;
+  width: 85px;
+  text-align: center;
+  vertical-align: center;
+  font-weight: bold;
+  -webkit-transition: outline .3s ease-in
+}
+
+.save:hover {
+  outline: 0.2px solid #8BB5B5;
+}
+
+.cancel {
+  font-family: Arial,sans-serif;
+  cursor: default;
+  background-color: #005E5E;
+  display: inline-block;
+  float: right;
+  border: 1px solid #003434;
+  border-radius: 2px;
+  margin: 8px  0 0;
+  font-size: 11px;
+  height: 27px;
+  line-height: 27px;
+  width: 85px;
+  text-align: center;
+  vertical-align: center;
+  font-weight: bold ;
+  -webkit-transition: outline-color .3s ease-in
+}
+
+.cancel:hover{
+  outline: 0.2px solid #8BB5B5;
 }
 
 .alertclose{
@@ -186,15 +241,6 @@ display: block;
 .highlight-clicked {
   background: yellow;
 }
-/*
-.highlight {
-  background:#ffe599;
-}
-
-.highlight-clicked {
-  background: #ff9900;
-}
-*/
 
 .boxclose:hover {
   transform: rotate(72deg)
@@ -226,9 +272,6 @@ footer {
    background-color: #8482FF;
 
 }
-
-
-
 
 .footer-links {
 	margin: 0;

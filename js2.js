@@ -228,6 +228,7 @@ function highlight_selection() {
 //function that gets all the next siblings for the inserted comment, and change their margin
 let amendPositionNextSiblingFar = function (elem) {
   let sibling = elem.nextSibling;
+  console.log(sibling);
   let toBeDeduced = parseInt(elem.style.marginTop) + 80;
   let siblingNewTopMargin = parseInt(sibling.style.marginTop) - toBeDeduced;
   sibling.style.margin = siblingNewTopMargin + "px " + "0px " + "0px " + "10px"
@@ -389,17 +390,19 @@ function createNewCommentOnEvent() {
     //add a notebox as a child to the element.
     createNewNoteBox();
 
+
     //check if we need toreposition the second next sibling.
     if (commentHeader.nextSibling && commentHeader.nextSibling.nextSibling) {
       console.log("Margintop detected for second next sibling is " + commentHeader.nextSibling.nextSibling.style.marginTop);
-      if (parseInt(commentHeader.nextSibling.nextSibling.style.marginTop) >= 80){
-      console.log("CALLING THE REPOSITIONING OF SECOND NEXT SIBLING BECAUSE IT IS FAR ENOUGH")
-    positionVariationSecondSibling(commentHeader, aboutToChangePositionOffsetTop);
-  } else {
+      if (parseInt(commentHeader.nextSibling.nextSibling.style.marginTop) >= 80) {
+        console.log("CALLING THE REPOSITIONING OF SECOND NEXT SIBLING BECAUSE IT IS FAR ENOUGH")
+        positionVariationSecondSibling(commentHeader, aboutToChangePositionOffsetTop);
+        }
+        else {
     console.log("Not calling the repositioning of second next sibling because it is not far enough")
+    }
   }
-}
-    //add events listeners
+
     //save the informations of the comment to an object, with ID, margin, absoluteOffsetBottom, and Content
     let newComment = new Comment(commentHeader.id, commentHeader.style.margin, commentHeader.absoluteOffsetBottom, commentHeader.innerHTML);
     comments.push(newComment);
@@ -409,11 +412,20 @@ function createNewCommentOnEvent() {
 //adding a child to the comment the notebox, with the text.
 function createNewNoteBox() {
     let noteBox = document.createElement("div");
+    let saveButton = document.createElement("div");
+    let cancelButton = document.createElement("div");
     noteBox.className = "notebox";
-    //let numberOfCommentsInClassAlert = document.getElementsByClassName("alert").length;
+    saveButton.className = "save";
+    saveButton.innerHTML = "Comment";
+    cancelButton.innerHTML = "Cancel";
+    cancelButton.className = "cancel";
     document.getElementsByClassName("alert")[passingobject.commentPosition].appendChild(noteBox);
     let editableText = document.createElement("p");
     editableText.setAttribute("contenteditable", "true");
+    noteBox.appendChild(editableText);
+    noteBox.appendChild(saveButton);
+    noteBox.appendChild(cancelButton);
+    editableText.focus();
   }
 
 //function add one to the counter everytime a new comment is added
@@ -426,3 +438,23 @@ function numberofcomments () {
 function clearStorage(){
     localStorage.clear();
 }
+
+
+marginright.onclick = function cancelComment(event) {
+  let target = event.target; // where was the click?
+  if (target.className != 'cancel') return; //checking if this is on cancel
+  let grandParentTarget = target.parentNode.parentNode;
+  grandParentTarget.parentNode.removeChild(grandParentTarget);
+
+  var highlights = document.querySelectorAll('.highlight');
+      for (var i = 0; i < highlights.length; i++) {
+        if (highlights[i].id = grandParentTarget.id) {
+          const toBeDeletedHighlight = highlights[i];
+          let highlightParentNode = highlights[i].parentNode
+          console.log(highlightParentNode);
+          console.log(toBeDeletedHighlight);
+          highlightParentNode.replaceChild(document.createTextNode(toBeDeletedHighlight.innerHTML), toBeDeletedHighlight);
+        //  highlightParentNode.removeChild(highlightParentNode);
+        }
+      }
+};
