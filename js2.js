@@ -4,6 +4,7 @@ let comments = new Array();
 
 //initialize the counter displayed on top
 let thereisacomment = false;
+
 function numberofcommentsAtLaunch() {
   let counterAtLaunch = comments.length;
   document.getElementById("test").innerHTML = counterAtLaunch;
@@ -15,6 +16,7 @@ function init() {
   getComment();
   getText();
   numberofcommentsAtLaunch();
+  highlightTextOnClick();
 }
 
 //this item serves to pass the margin between functions. It should disappear soon.
@@ -28,10 +30,13 @@ let passingobject = {
   lastElementChild: true,
 };
 
+
+
 ///////////////////////////////
 // highlight function listeners
 ///////////////////////////////
 
+var ellipsis = Ellipsis();
 
 text.addEventListener("copy", highlight_selection);
 text.addEventListener("copy", createNewCommentOnEvent);
@@ -39,6 +44,9 @@ text.addEventListener("copy", numberofcomments);
 text.addEventListener("paste", clearStorage);
 document.addEventListener("click", clickOutside);
 marginright.addEventListener("click", cancelComment);
+marginright.addEventListener("click", saveComment);
+
+
 //function to make sure annotated text gets highlighted when clicked.
 
 function highlightTextOnClick() {
@@ -47,6 +55,7 @@ function highlightTextOnClick() {
       for (var i = 0; i < highlightsList.length; i++) {
         let clickedId = highlightsList[i].id;
         highlightsList[i].onclick = changePosition;
+        console.log("added the event highlight to " + clickedId)
       }
     }
 
@@ -75,6 +84,7 @@ function clickOutside() {
       }
     }
 
+
 function cancelComment(event) {
   const target = event.target;
   if (target.className != 'cancel') return;
@@ -83,13 +93,41 @@ function cancelComment(event) {
   grandParentTarget.parentNode.removeChild(grandParentTarget);
   var highlights = document.querySelectorAll('.highlight');
       for (var i = 0; i < highlights.length; i++) {
-        if (highlights[i].id = grandParentTarget.id) {
+        if (highlights[i].id == grandParentTarget.id) {
           let toBeDeletedHighlight = highlights[i];
           let highlightParentNode = highlights[i].parentNode
           highlightParentNode.replaceChild(document.createTextNode(toBeDeletedHighlight.innerHTML), toBeDeletedHighlight);
         }
       }
     };
+
+function saveComment(event) {
+const target = event.target;
+if (target.className != 'save') return;
+
+let textToSave = event.target.previousSibling.textContent;
+let numberofAnnotations = document.getElementsByClassName("alert").length;
+let commentToAdd = document.getElementsByClassName("alert")[numberofAnnotations-1];
+let newComment = new Comment(commentToAdd.id, commentToAdd.style.margin, commentToAdd.absoluteOffsetBottom, commentToAdd.innerHTML, commentToAdd.time, textToSave);
+comments.push(newComment);
+storeComment(newComment);
+console.log('Comment stored')
+let paragraph = event.target.previousSibling;
+paragraph.setAttribute("contenteditable", "false");
+let buttonCommentToHide = event.target;
+buttonCommentToHide.style.display = "none";
+let buttonCancelToHide = event.target.nextSibling;
+buttonCancelToHide.style.display = "none";
+let paragraphToSave = event.target.previousSibling;
+paragraphToSave.readOnly = true;
+ellipsis.add(paragraphToSave);
+}
+
+function saveAnnotationText(event) {
+
+}
+
+
 
 
 //function to get highlighted text
@@ -111,8 +149,9 @@ function getComment() {
 if (localStorage) {
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
-          if (key.substring(0, 7) == "comment") {
-          //  let comments  = new Array();
+          if (key.substring(0, 7) == "Comment") {
+            console.log('found some comments to load')
+
             let item = localStorage.getItem(key);
             let commentItem = JSON.parse(item);
             comments.push(commentItem);
@@ -139,13 +178,13 @@ function createNewComment(commentFromStorage) {
   commentHeader.innerHTML = commentFromStorage.content;
   commentHeader.style.margin = commentFromStorage.margin;
   commentHeader.id = commentFromStorage.id;
-  return commentHeader ;
+  return commentHeader;
   }
 
 //save new or edited comments objects to storage
-function saveComment(Comment) {
+function storeComment(Comment) {
     if (localStorage) {
-      let key = "comment " + Comment.id;
+      let key = "Comment " + Comment.id;
       let item = JSON.stringify(Comment);
       localStorage.setItem(key, item);
       }
@@ -166,19 +205,22 @@ function saveText() {
     }
   }
 
-//Class created to store the Comments
-function Comment(id, margin, absoluteOffsetBottom, content) {
+//Class constructor to store the Comments
+class Comment {
+  constructor(id, margin, absoluteOffsetBottom, content, time, annotation) {
     this.id = id;
     this.margin = margin;
     this.absoluteOffsetBottom = absoluteOffsetBottom;
     this.content = content;
+    this.time = new Date();
+    this.annotation = annotation;
   }
-
+}
 /////////////////////////////////////////////
 //****************************************//
 /////////////////////////////////////////////
 
-//hightlight the text on event trigger
+//highlight the text on event trigger
 function highlight_selection() {
     //initiate variable for the selection
     let selection;
@@ -416,9 +458,7 @@ function createNewCommentOnEvent() {
   }
 
     //save the informations of the comment to an object, with ID, margin, absoluteOffsetBottom, and Content
-    let newComment = new Comment(commentHeader.id, commentHeader.style.margin, commentHeader.absoluteOffsetBottom, commentHeader.innerHTML);
-    comments.push(newComment);
-    saveComment(newComment);
+
 }
 
 //adding a child to the comment the notebox, with the text.

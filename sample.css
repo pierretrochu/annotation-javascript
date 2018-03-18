@@ -131,12 +131,15 @@ cursor: pointer;
   transition-timing-function: ease-out;
   box-shadow: rgba(0,0,0,.1) 0 3px 15px;
   cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .notebox {
   width: 184px;
   cursor: default;
-  min-height: 60px;
+  min-height: 20px;
   position: static;
   background-color: teal;
   box-shadow: rgba(0,0,0,.05) 0 3px 15px;
@@ -155,6 +158,14 @@ cursor: pointer;
   padding: 4px;
   font-family: Arial,sans-serif;
   font-size: 14px;
+  white-space: normal;
+}
+
+.notebox p:read-only {
+  background-color: teal;
+  border: none;
+  cursor: default;
+  color: white;
 }
 
 .save {
