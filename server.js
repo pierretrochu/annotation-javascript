@@ -2,7 +2,7 @@
 var express = require('express'); //express module must be installed using NPM
 var app = express(); //create app
 var path = require('path'); //built in path module, used to resolve paths of relative files
-var port = 3700 //stores port number to listen on
+var port = 8000 //stores port number to listen on
 
 app.use(express.static(path.join(__dirname + '/css'))); //allows html file to reference stylesheet that is stored in ./css directory
 app.use(express.static(path.join(__dirname + '/js'))); //allows html file to reference js
