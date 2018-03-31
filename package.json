@@ -1,0 +1,24 @@
+{
+  "name": "annotation",
+  "version": "1.0.0",
+  "description": "This is a test project i created mostly to learn and experiment with Javascript.",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pierretrochu/annotation-javascript.git"
+  },
+  "author": "Pierre Trochu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pierretrochu/annotation-javascript/issues"
+  },
+  "homepage": "https://github.com/pierretrochu/annotation-javascript#readme"
+}
