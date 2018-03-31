@@ -7,7 +7,6 @@ http.createServer(function (req, res) {
   res.write('Hello World!'); //write a response to the client
   res.end(); //end the response
 }).listen(8080); //the server object listens on port 8080
-
 */
 
 function send404Response(response) {
@@ -19,7 +18,7 @@ function send404Response(response) {
 function onRequest(request, response) {
   if (request.method == 'GET') {
     response.writeHead(200, {"Content-Type": "text/html"});
-    fs.createReadStream("/Annotationsample.html").pipe(response);
+    fs.createReadStream("Annotationsample.html").pipe(response);
     console.log("This is the last thing dude...")
 }
     else {
