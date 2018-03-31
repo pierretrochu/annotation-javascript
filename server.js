@@ -20,7 +20,6 @@ function onRequest(request, response) {
   if (request.method == 'GET') {
     response.writeHead(200, {"Content-Type": "text/html"});
     fs.createReadStream("./annotationsample.html").pipe(response);
-    fs.createReadStream("./sample.css").pipe(response);
     console.log("This is the last thing dude...")
 }
     else {
