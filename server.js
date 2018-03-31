@@ -8,7 +8,7 @@ app.use(express.static(path.join(__dirname + '/css'))); //allows html file to re
 app.use(express.static(path.join(__dirname + '/js'))); //allows html file to reference js
 
 app.get('/', function(req, res) { //on html request of root directory, run callback function
-    res.sendFile(path.join(__dirname, 'annotationsample.html')); //send html file named
+    res.sendFile(path.join(__dirname, 'Annotationsample.html')); //send html file named
 });
 
 app.listen(port);//listen for network traffic on port specified by port variable
