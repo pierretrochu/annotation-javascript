@@ -1,29 +1,16 @@
-var http = require('http');
-var fs = require('fs');
+// Require modules
+var express = require('express'); //express module must be installed using NPM
+var app = express(); //create app
+var path = require('path'); //built in path module, used to resolve paths of relative files
+var port = 3700 //stores port number to listen on
 
-/*
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write('Hello World!'); //write a response to the client
-  res.end(); //end the response
-}).listen(8080); //the server object listens on port 8080
+app.use(express.static(path.join(__dirname + '/css'))); //allows html file to reference stylesheet that is stored in ./css directory
+app.use(express.static(path.join(__dirname + '/js'))); //allows html file to reference js
 
-*/
-function send404Response(response) {
-  response.writeHead(404, {"Content-Type": "text/plain"});
-  response.write('Error 404 - sorry the page was not found!');
-  response.end();
-  }
+app.get('/', function(req, res) { //on html request of root directory, run callback function
+    res.sendFile(path.join(__dirname, 'annotationsample.html')); //send html file named
+});
 
-function onRequest(request, response) {
-  if (request.method == 'GET') {
-    response.writeHead(200, {"Content-Type": "text/html"});
-    fs.createReadStream("Annotationsample.html").pipe(response);
-    console.log("This is the last thing dude...")
-}
-    else {
-    send404Response(response);
-  }
-}
+app.listen(port);//listen for network traffic on port specified by port variable
 
-http.createServer(onRequest).listen(8080);
+console.log("Now listening on port " + port); //write to the console which port is being used
