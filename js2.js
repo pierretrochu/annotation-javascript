@@ -1,4 +1,3 @@
-
 //Array to gather all comments created. Interestingly it has to be before init.
 let comments = new Array();
 
