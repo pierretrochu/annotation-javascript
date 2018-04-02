@@ -7,7 +7,6 @@ router.get('/', function (req, res) {
   })
 
 router.get('/testers', function (req, res) {
-    res.sendFile('/file.html', { root: "./testers"}); //send html file named
-    })
-
+    res.sendFile('/file.html', { root: "./testers"}) //send html file named
+});
 module.exports = router;
